@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(ur_simulation_gazebo)
+project(ur_ros2_gazebo)
 
 find_package(ament_cmake REQUIRED)
 

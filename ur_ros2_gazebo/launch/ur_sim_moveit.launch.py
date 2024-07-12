@@ -51,7 +51,7 @@ def launch_setup(context, *args, **kwargs):
 
     ur_control_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            [FindPackageShare("ur_simulation_gazebo"), "/launch", "/ur_sim_control.launch.py"]
+            [FindPackageShare("ur_ros2_gazebo"), "/launch", "/ur_sim_control.launch.py"]
         ),
         launch_arguments={
             "ur_type": ur_type,
@@ -113,7 +113,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "runtime_config_package",
-            default_value="ur_simulation_gazebo",
+            default_value="ur_ros2_gazebo",
             description='Package with the controller\'s configuration in "config" folder. \
         Usually the argument is not set, it enables use of a custom setup.',
         )
@@ -128,15 +128,15 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "description_package",
-            default_value="ur_description",
-            description="Description package with robot URDF/XACRO files. Usually the argument \
-        is not set, it enables use of a custom description.",
+            default_value="ur_proxysim_description",
+            description="Description package with robot URDF/XACRO files. Pointing by default to a package for \
+                proximity sensors simulation.",
         )
     )
     declared_arguments.append(
         DeclareLaunchArgument(
             "description_file",
-            default_value="ur.urdf.xacro",
+            default_value="ur_flange_tof_calib.urdf.xacro",
             description="URDF/XACRO description file with the robot.",
         )
     )

@@ -38,9 +38,11 @@ from launch.actions import (
 from launch.conditions import IfCondition, UnlessCondition
 from launch.event_handlers import OnProcessExit
 from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.actions import ExecuteProcess
 from launch.substitutions import Command, FindExecutable, LaunchConfiguration, PathJoinSubstitution
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
+from ament_index_python.packages import get_package_share_directory
 
 
 def launch_setup(context, *args, **kwargs):
@@ -149,14 +151,21 @@ def launch_setup(context, *args, **kwargs):
     )
 
     # Gazebo nodes
-    gazebo = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            [FindPackageShare("gazebo_ros"), "/launch", "/gazebo.launch.py"]
-        ),
-        launch_arguments={
-            "gui": gazebo_gui,
-        }.items(),
-    )
+    #gazebo = IncludeLaunchDescription(
+    #    PythonLaunchDescriptionSource(
+    #        [FindPackageShare("gazebo_ros"), "/launch", "/gazebo.launch.py"]
+    #    ),
+    #    launch_arguments={
+    #        "gui": gazebo_gui,
+    #    }.items(),
+    #)
+
+    # Custom worlds path
+    sim_description_package = 'ur_proxysim_description'
+    world_name = 'walk.world'
+    gz_custom_world = get_package_share_directory(sim_description_package) + '/gazebo_models/' +  world_name
+    print(gz_custom_world)
+
 
     # Spawn robot
     gazebo_spawn_robot = Node(
@@ -173,7 +182,8 @@ def launch_setup(context, *args, **kwargs):
         delay_rviz_after_joint_state_broadcaster_spawner,
         initial_joint_controller_spawner_stopped,
         initial_joint_controller_spawner_started,
-        gazebo,
+        # gazebo
+        ExecuteProcess(cmd=['gazebo', '--verbose', gz_custom_world, '-s', 'libgazebo_ros_factory.so'], output='screen'),
         gazebo_spawn_robot,
     ]
 
