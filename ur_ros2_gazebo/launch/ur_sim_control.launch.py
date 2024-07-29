@@ -162,8 +162,9 @@ def launch_setup(context, *args, **kwargs):
 
     # Custom worlds path
     sim_description_package = 'ur_proxysim_description'
-    world_name = 'walk.world'
-    gz_custom_world = get_package_share_directory(sim_description_package) + '/gazebo_models/' +  world_name
+    world_name = 'office_small.world'
+    #gz_custom_world = get_package_share_directory(sim_description_package) + '/gazebo_models/' +  world_name
+    gz_custom_world =  '/home/francesco/.gazebo/worlds/' +  world_name
     print(gz_custom_world)
 
 
